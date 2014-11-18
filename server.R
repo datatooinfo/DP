@@ -1,19 +1,15 @@
 library("shiny", lib.loc="~/R/win-library/3.1")
 library(datasets)
 
-# We tweak the "am" field to have nicer factor labels. Since this doesn't
-# rely on any user inputs we can do this once at startup and then use the
-# value throughout the lifetime of the application
+# Read the Tooth Growth dataset
 tgData <- (ToothGrowth)
-#tgData$supp <- factor(tgData$supp, labels = c("OJ", "VC"))
 
-# Define server logic required to plot various variables against mpg
+# Define server logic required to plot variables against len
 shinyServer(function(input, output) {
 
-  # Compute the forumla text in a reactive expression since it is 
-  # shared by the output$caption and output$mpgPlot expressions
+  # Compute the forumla text in a reactive expression.
   formulaText <- reactive({
-    paste("len ~", input$variable)
+      paste("len ~", input$variable)
   })
 
   # Return the formula text for printing as a caption
@@ -21,7 +17,7 @@ shinyServer(function(input, output) {
     formulaText()
   })
 
-  # Generate a plot of the requested variable against mpg and only 
+  # Generate a plot of the requested variable against len and only 
   # include outliers if requested
   output$tgPlot <- renderPlot({
       boxplot(as.formula(formulaText()), 
